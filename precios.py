@@ -6,6 +6,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
+from datetime import datetime
 
 # Configuración del navegador Chrome
 chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
@@ -21,7 +22,7 @@ chrome_options.add_argument('--start-maximized')
 # Crear instancia del navegador Chrome
 driver = webdriver.Chrome(options=chrome_options)
 
-especies = ['TX31', 'PARP', 'AL30D', 'TX28']
+especies = ['TX31', 'PARP', 'AL30D', 'TX28', 'TX26']
 especies_detalles = []
 
 for especie in especies:
@@ -45,8 +46,12 @@ for especie in especies:
         montoNegociado = driver.find_element(By.XPATH, '//*[@id="page-body-container"]/div[2]/div/div[2]/div[1]/div[2]/ul/li[9]/span[2]')
         operaciones = driver.find_element(By.XPATH, '//*[@id="page-body-container"]/div[2]/div/div[2]/div[1]/div[2]/ul/li[10]/span[2]')
         
+        # Obtener la fecha y hora actuales
+        current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
         # Almacenar los datos en el diccionario
         especies_detalle = {
+            'Fecha': current_datetime,
             'Ticker': detailSimbolo.text,
             'Nombre': detailDescripcionNombre.text,
             'Precio': detailCotizacion.text,
@@ -60,8 +65,9 @@ for especie in especies:
         especies_detalles.append(especies_detalle)
         
         print(especies_detalle)
-    except:
-        print('No se pudo encontrar los valores')
+    except Exception as e:
+        print(f'No se pudo encontrar los valores para {especie}: {e}')
+        continue  # Continuar con el siguiente elemento de la lista
 
 # Cerrar el navegador
 driver.quit()
