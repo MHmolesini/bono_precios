@@ -51,7 +51,6 @@ categorias = {
     'TDE25': 'BONO DUAL',
     'TV25': 'BONO LINKED',
     'TZV25': 'BONO LINKED',
-    
     'S01L4': 'LECAP',
     'S12L4': 'LECAP',
     'S26L4': 'LECAP',
@@ -63,7 +62,6 @@ categorias = {
     'S31E5': 'LECAP',
     'S28F5': 'LECAP',
     'S31M5': 'LECAP',
-
     'AL30D': 'BONO DOLARES L.ARG',
 }
 especies_detalles = []
@@ -120,5 +118,23 @@ for especie in especies:
 driver.quit()
 
 # Convertir la lista de diccionarios a un DataFrame de pandas
-df = pd.DataFrame(especies_detalles)
-print(df)
+nuevo_df = pd.DataFrame(especies_detalles)
+print(nuevo_df)
+
+# Nombre del archivo CSV donde guardarás los datos
+archivo_csv = 'datos.csv'
+
+# Leer los datos existentes (si el archivo existe)
+try:
+    datos_existentes = pd.read_csv(archivo_csv)
+except FileNotFoundError:
+    # Si el archivo no existe, crear un DataFrame vacío
+    datos_existentes = pd.DataFrame()
+
+# Combinar los datos existentes con los nuevos datos
+df_combinado = pd.concat([datos_existentes, nuevo_df], ignore_index=True)
+
+# Guardar el DataFrame combinado de vuelta al archivo CSV
+df_combinado.to_csv(archivo_csv, index=False)
+
+print("Datos combinados guardados exitosamente.")
