@@ -22,7 +22,50 @@ chrome_options.add_argument('--start-maximized')
 # Crear instancia del navegador Chrome
 driver = webdriver.Chrome(options=chrome_options)
 
-especies = ['TX31', 'PARP', 'AL30D', 'TX28', 'TX26']
+especies = ['PARP', 'DICP', 'CUAP', 'PAP0', 'DIP0', 'TO26', 'T5X4', 'T2X4', 'T4X4', 'TC25P', 'TX25', 'TX26', 'TX28', 'TX31', 'TZX25', 'TZX26', 'TZX27', 'TZX28', 'TZXD5', 'TZXD6', 'TZXD7', 'TZXM6', 'TDG24', 'TDJ24', 'TDE25', 'TV25', 'TZV25', 'S01L4', 'S12L4', 'S26L4', 'S16G4', 'S30G4', 'S13S4', 'S14O4', 'S29N4', 'S31E5', 'S28F5', 'S31M5', 'AL30D']
+categorias = {
+    'PARP': 'BONCER',
+    'DICP': 'BONCER',
+    'CUAP': 'BONCER',
+    'PAP0': 'BONCER',
+    'DIP0': 'BONCER',
+    'TO26': 'BONO',
+    'T5X4': 'BONCER',
+    'T2X4': 'BONCER',
+    'T4X4': 'BONCER',
+    'TC25P': 'BONCER',
+    'TX25': 'BONCER',
+    'TX26': 'BONCER',
+    'TX28': 'BONCER',
+    'TX31': 'BONCER',
+    'TZX25': 'BONCER',
+    'TZX26': 'BONCER',
+    'TZX27': 'BONCER',
+    'TZX28': 'BONCER',
+    'TZXD5': 'BONCER',
+    'TZXD6': 'BONCER',
+    'TZXD7': 'BONCER',
+    'TZXM6': 'BONCER',
+    'TDG24': 'BONO DUAL',
+    'TDJ24': 'BONO DUAL',
+    'TDE25': 'BONO DUAL',
+    'TV25': 'BONO LINKED',
+    'TZV25': 'BONO LINKED',
+    
+    'S01L4': 'LECAP',
+    'S12L4': 'LECAP',
+    'S26L4': 'LECAP',
+    'S16G4': 'LECAP',
+    'S30G4': 'LECAP',
+    'S13S4': 'LECAP',
+    'S14O4': 'LECAP',
+    'S29N4': 'LECAP',
+    'S31E5': 'LECAP',
+    'S28F5': 'LECAP',
+    'S31M5': 'LECAP',
+
+    'AL30D': 'BONO DOLARES L.ARG',
+}
 especies_detalles = []
 
 for especie in especies:
@@ -49,9 +92,13 @@ for especie in especies:
         # Obtener la fecha y hora actuales
         current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         
+        # Obtener la categoría correspondiente al Ticker
+        categoria = categorias.get(especie, 'Desconocido')
+
         # Almacenar los datos en el diccionario
         especies_detalle = {
             'Fecha': current_datetime,
+            'Categoria': categoria,
             'Ticker': detailSimbolo.text,
             'Nombre': detailDescripcionNombre.text,
             'Precio': detailCotizacion.text,
